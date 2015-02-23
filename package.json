@@ -35,8 +35,9 @@
 		"pty.js": "0.2.5",
 		"restify": "2.8.*",
 		"sqlite3": "3.0.*",
+		"userid": "0.1.1",
 		"winston": "0.9.*"
 	},
 	"private": true,
-	"license": "GPL-v3"
+	"license": "GPLv3"
 }
