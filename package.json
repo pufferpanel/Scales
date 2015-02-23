@@ -13,7 +13,7 @@
 	"scripts": {
 		"start": "node lib/scales.js",
 		"verbose": "node lib/scales.js verbose",
-		"test": "node lib/scales.js"
+		"test": "node lib/scales.js test"
 	},
 	"bin": {
 		"scales": "scales"
