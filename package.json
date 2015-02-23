@@ -12,7 +12,8 @@
 	],
 	"scripts": {
 		"start": "node lib/scales.js",
-		"verbose": "node lib/scales.js verbose"
+		"verbose": "node lib/scales.js verbose",
+		"test": "node lib/scales.js"
 	},
 	"bin": {
 		"scales": "scales"
