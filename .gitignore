@@ -4,3 +4,6 @@
 node_modules
 *.log
 data/*.json
+config.json
+https.key
+https.pem
