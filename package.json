@@ -14,7 +14,7 @@
 		"start": "node lib/scales.js"
 	},
 	"bin": {
-		"scales": "scales"
+		"scales": "./scales.js"
 	},
 	"main": "lib/scales.js",
 	"repository": {
