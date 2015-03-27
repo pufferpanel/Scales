@@ -13,9 +13,6 @@
 	"scripts": {
 		"start": "node lib/scales.js"
 	},
-	"bin": {
-		"scales": "./scales.js"
-	},
 	"main": "lib/scales.js",
 	"repository": {
 		"type": "git",
