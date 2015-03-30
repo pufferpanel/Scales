@@ -23,6 +23,7 @@
 	},
 	"dependencies": {
 		"async": "0.9.*",
+		"binaryjs": "0.2.1",
 		"date-utils": "1.2.*",
 		"fs-extra": "0.16.*",
 		"gamedig": "0.2.23",
