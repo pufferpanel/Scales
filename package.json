@@ -38,7 +38,7 @@
 		"tar-fs": "1.5.*",
 		"trim": "0.0.1",
 		"usage": "0.6.0",
-		"userid": "0.1.1",
+		"userid": "0.1.2",
 		"winston": "0.9.*"
 	},
 	"private": true,
