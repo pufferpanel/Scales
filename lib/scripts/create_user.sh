@@ -7,7 +7,8 @@
 # ./create_user.sh /home/ username password
 # ==============================
 
-useradd -m -d $1$2 -g scalesuser -p $(openssl passwd -1 $3) $2
+useradd -m -d $1$2 -p $(openssl passwd -1 $3) $2
+usermod -G scalesuser $2
 
 chown root:root $1$2
 chmod 755 $1$2
