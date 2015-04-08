@@ -7,3 +7,6 @@ config.json
 https.key
 https.pem
 data/*
+*.crt
+*.key
+*.csr
