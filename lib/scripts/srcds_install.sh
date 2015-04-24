@@ -17,10 +17,19 @@ fi
 
 cd /home/$1/public
 
+mkdir steamcmd
+cp -R /srv/steamcmd/* /home/$1/public/steamcmd
+
+# mkdir -p .steam/sdk32
+# cd .steam/sdk32
+# ln -s /srv/steamcmd/linux32/steamclient.so
+
+cd /home/$1/public/steamcmd
 # We run it like this to prevent a malicious user from changing the steamcmd.sh file, also keeps everything centralized for this.
-/srv/steamcmd/steamcmd.sh +login anonymous +force_install_dir /home/$1/public +app_update $2 +quit
+./steamcmd.sh +login anonymous +force_install_dir /home/$1/public +app_update $2 +quit
 
 # Save SRCDS Run File for MD5 Checking
+cd ../
 cp srcds_run ../
 
 chown -R $1:scalesuser *
