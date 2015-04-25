@@ -32,7 +32,8 @@ cp -R /srv/steamcmd/* /home/$1/public/steamcmd
 su - $1 -c "cd public/steamcmd && ./steamcmd.sh +login anonymous +force_install_dir /home/$1/public +app_update $2 +quit 2>&1"
 
 # Save SRCDS Run File for MD5 Checking
-cp srcds_run ../
+cd /home/$1
+cp public/srcds_run .
 
 chown -R $1:scalesuser *
 
