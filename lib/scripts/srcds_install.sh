@@ -4,11 +4,30 @@
 # Scales User Management Script
 # Written for Ubuntu Sysems
 #
-# ./srcds_install.sh username gameid
+# ./srcds_install.sh -u username gameid
 # ==============================
 
 # Allows enough time for PufferPanel to get the Feed
 sleep 5
+
+username=root
+
+while getopts ":u:" opt; do
+    case "$opt" in
+    u)
+        username=$OPTARG
+        ;;
+    esac
+done
+
+if[ "${username}" == "root" ]; then
+
+    echo "WARNING: Invalid Username Supplied."
+    exit 1
+
+fi;
+
+shift $((OPTIND-1))
 
 if [ ! -f "/srv/steamcmd/steamcmd.sh" ]; then
 
@@ -18,23 +37,23 @@ if [ ! -f "/srv/steamcmd/steamcmd.sh" ]; then
 
 fi
 
-cd /home/$1/public
+cd /home/${username}/public
 
 mkdir steamcmd
 
-cp -R /srv/steamcmd/* /home/$1/public/steamcmd
+cp -R /srv/steamcmd/* /home/${username}/public/steamcmd
 
 # mkdir -p .steam/sdk32
 # cd .steam/sdk32
 # ln -s /srv/steamcmd/linux32/steamclient.so
 
 # SteamCMD is strange about the user who installs it and where it places some files.
-su - $1 -c "cd public/steamcmd && ./steamcmd.sh +login anonymous +force_install_dir /home/$1/public +app_update $2 +quit 2>&1"
+su - ${username} -c "cd public/steamcmd && ./steamcmd.sh +login anonymous +force_install_dir /home/${username}/public +app_update $2 +quit 2>&1"
 
 # Save SRCDS Run File for MD5 Checking
-cd /home/$1
+cd /home/${username}
 cp public/srcds_run .
 
-chown -R $1:scalesuser *
+chown -R ${username}:scalesuser *
 
 exit 0

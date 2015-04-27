@@ -4,64 +4,103 @@
 # Scales User Management Script
 # Written for Ubuntu Sysems
 #
-# ./srcds_install.sh username [-r remote_link -d]
+# ./srcds_install.sh username [-p plugin -s sponge_version -f forge_version -v vanilla_version]
 # ==============================
 
 # Allows enough time for PufferPanel to get the Feed
 sleep 5
 
-cd /home/$1/public
+username=root
+plugin="vanilla"
+spongeVersion="1.8-1371-2.1DEV-430"
+forgeVersion="1.8-11.14.1.1334"
+vanillaVersion="1.8.4"
 
-remote=false
-decompress=false
-
-while getopts "rd" opt; do
+while getopts ":u:s:f:p:v:" opt; do
     case "$opt" in
-	r)
-		remote=$OPTARG;
-		;;
-	d)
-		decompress=true;
-	esac
+    u)
+        username=$OPTARG
+        ;;
+    s)
+        spongeVersion=$OPTARG
+        ;;
+    f)
+        forgeVersion=$OPTARG
+        ;;
+    p)
+        plugin=$OPTARG
+        ;;
+    v)
+        vanillaVersion=$OPTARG
+        ;;
+    esac
 done
 
-if [ "$remote" = false ]; then
+if [ "$username" == "root" ]; then
 
-	echo "Downloading Remote File..."
-	echo "https://s3.amazonaws.com/Minecraft.Download/versions/1.8.4/minecraft_server.1.8.4.jar"
-	curl -o server.jar https://s3.amazonaws.com/Minecraft.Download/versions/1.8.4/minecraft_server.1.8.4.jar
+    echo "WARNING: Invalid Username Supplied."
+    exit 1
 
-else
+fi;
 
-	if [ "$decompress" = true ]; then
+cd /home/$username/public
 
-		echo 'Downloading Remote File...'
-		echo remote
-		curl -o download.zip remote
+if [ "$plugin" == "spigot" ]; then
 
-		if [ file --mime-type "download.zip" | grep -q zip$ ]; then
+    # We will ignore -r for this since there is no easy way to do a specific version of Spigot.
+    # To install a specific version the user should manually build and upload files.
+    echo 'Downloading BuildTools for Spigot'
+    echo "https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar"
+    curl -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
 
-			echo 'Unzipping downloaded file...'
-			unzip download.zip
+    git config --global --unset core.autocrlf
+    java -jar BuildTools.jar
 
-		elif [ file --mime-type "download.zip" | grep -q gzip$ ]; then
+    mv -v spigot*.jar ../server.jar
+    mv -v craftbukkit*.jar ../craftbukkit.jar
 
-			echo 'Decompressing downloaded tarGZ file...'
-			tar -xzvf download.zip
+    rm -rfv *
 
-		fi
+    mv -v ../server.jar server.jar
+    mv -v ../craftbukkit.jar craftbukkit.jar
 
-	else
+elif [[ "$plugin" == "forge" || $plugin == "sponge-forge" ]]; then
 
-		echo 'Downloading Remote File...'
-		echo remote
-		curl -O remote
+    echo "Downloading Forge Version ${forgeVersion}";
+    echo "http://files.minecraftforge.net/maven/net/minecraftforge/forge/${forgeVersion}/forge-${forgeVersion}-installer.jar"
+    curl -o MinecraftForgeInstaller.jar http://files.minecraftforge.net/maven/net/minecraftforge/forge/${forgeVersion}/forge-${forgeVersion}-installer.jar
 
-	fi
+    java -jar MinecraftForgeInstaller.jar --installServer
+
+    mv -v forge-${forgeVersion}-universal.jar server.jar
+    rm -fv MinecraftForgeInstaller.jar
+
+    # Install Sponge Now
+    if [ "$plugin" == "sponge-forge" ]; then
+
+        mkdir mods
+        cd mods
+
+        echo "Installing Sponge Version ${spongeVersion}"
+        echo "http://repo.spongepowered.org/maven/org/spongepowered/sponge/${spongeVersion}/sponge-${spongeVersion}.jar"
+        curl -o sponge-${spongeVersion}.jar http://repo.spongepowered.org/maven/org/spongepowered/sponge/${spongeVersion}/sponge-${spongeVersion}.jar
+
+    fi
+
+elif [ "$plugin" == "sponge" ]; then
+
+    echo 'Sponge Standalone is not currently suported in this version.';
+
+elif [[ "$plugin" == "vanilla" ]]; then
+
+    echo "Downloading Remote File..."
+    echo "https://s3.amazonaws.com/Minecraft.Download/versions/${vanillaVersion}/minecraft_server.${vanillaVersion}.jar"
+    curl -o server.jar https://s3.amazonaws.com/Minecraft.Download/versions/${vanillaVersion}/minecraft_server.${vanillaVersion}.jar
 
 fi
 
-echo 'Fixing permissions for file.'
-chown -R $1:scalesuser *
+echo 'Fixing permissions for downloaded files...'
+chown -R ${username}:scalesuser *
 
+echo 'Exiting Installer'
 exit 0
