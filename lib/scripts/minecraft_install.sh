@@ -1,11 +1,9 @@
 #!/bin/bash
-
-# ==============================
-# Scales User Management Script
+#
+# Minecraft Installer
 # Written for Ubuntu Sysems
 #
-# ./srcds_install.sh username [-p plugin -s sponge_version -f forge_version -v vanilla_version]
-# ==============================
+# ./minecraft_install.sh -u username [-p plugin -s sponge_version -f forge_version -v vanilla_version]
 
 # Allows enough time for PufferPanel to get the Feed
 sleep 5

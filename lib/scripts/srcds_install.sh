@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ==============================
-# Scales User Management Script
+# SRCDS Server Installer
 # Written for Ubuntu Sysems
 #
 # ./srcds_install.sh -u username gameid
@@ -20,7 +20,7 @@ while getopts ":u:" opt; do
     esac
 done
 
-if[ "${username}" == "root" ]; then
+if [ "${username}" == "root" ]; then
 
     echo "WARNING: Invalid Username Supplied."
     exit 1
