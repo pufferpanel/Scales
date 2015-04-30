@@ -31,10 +31,12 @@ shift $((OPTIND-1))
 
 cd /home/${username}/public
 
-mkdir steamcmd
+mkdir steamcmd && cd steamcmd
 
 curl -O http://media.steampowered.com/installer/steamcmd_linux.tar.gz
 tar -xzvf steamcmd_linux.tar.gz && rm -rf steamcmd_linux.tar.gz
+
+cd ../
 
 chown -R ${username}:scalesuser *
 
