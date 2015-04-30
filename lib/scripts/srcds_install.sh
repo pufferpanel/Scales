@@ -41,7 +41,7 @@ cd ../
 chown -R ${username}:scalesuser *
 
 # SteamCMD is strange about the user who installs it and where it places some files.
-su - ${username} -c "cd public/steamcmd && ./steamcmd.sh +login anonymous +force_install_dir /home/${username}/public +app_update $2 +quit 2>&1"
+su - ${username} -c "cd public/steamcmd && ./steamcmd.sh +login anonymous +force_install_dir /home/${username}/public +app_update $1 +quit 2>&1"
 
 # Save SRCDS Run File for MD5 Checking
 cd /home/${username}
