@@ -54,14 +54,6 @@ if [ "$plugin" == "spigot" ]; then
     git config --global --unset core.autocrlf
     java -jar BuildTools.jar
 
-    mv -v spigot*.jar ../server.jar
-    mv -v craftbukkit*.jar ../craftbukkit.jar
-
-    rm -rfv *
-
-    mv -v ../server.jar server.jar
-    mv -v ../craftbukkit.jar craftbukkit.jar
-
 elif [[ "$plugin" == "forge" || $plugin == "sponge-forge" ]]; then
 
     echo "Downloading Forge Version ${forgeVersion}";
