@@ -42,6 +42,7 @@ cd /home/${username}/public
 mkdir steamcmd
 
 cp -R /srv/steamcmd/* /home/${username}/public/steamcmd
+chown -R ${username}:scalesuser *
 
 # mkdir -p .steam/sdk32
 # cd .steam/sdk32
