@@ -55,8 +55,9 @@ if [ "$plugin" == "spigot" ]; then
     java -jar BuildTools.jar
     
     echo 'Removing BuildTools Files and Folders...'
-    rm -rf !(*.jar)
-    mv spigot*.jar server.jar
+    mv spigot*.jar ../server.jar
+    rm -rf *
+    mv ../server.jar server.jar
 
 elif [[ "$plugin" == "forge" || $plugin == "sponge-forge" ]]; then
 
