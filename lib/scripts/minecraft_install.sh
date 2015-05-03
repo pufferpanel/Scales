@@ -53,6 +53,8 @@ if [ "$plugin" == "spigot" ]; then
 
     git config --global --unset core.autocrlf
     java -jar BuildTools.jar
+    
+    mv spigot*.jar server.jar
 
 elif [[ "$plugin" == "forge" || $plugin == "sponge-forge" ]]; then
 
