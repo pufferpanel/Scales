@@ -54,6 +54,8 @@ if [ "$plugin" == "spigot" ]; then
     git config --global --unset core.autocrlf
     java -jar BuildTools.jar
     
+    echo 'Removing BuildTools Files and Folders...'
+    rm -rf !(*.jar)
     mv spigot*.jar server.jar
 
 elif [[ "$plugin" == "forge" || $plugin == "sponge-forge" ]]; then
@@ -64,8 +66,8 @@ elif [[ "$plugin" == "forge" || $plugin == "sponge-forge" ]]; then
 
     java -jar MinecraftForgeInstaller.jar --installServer
 
-    mv -v forge-${forgeVersion}-universal.jar server.jar
-    rm -fv MinecraftForgeInstaller.jar
+    mv forge-${forgeVersion}-universal.jar server.jar
+    rm -f MinecraftForgeInstaller.jar
 
     # Install Sponge Now
     if [ "$plugin" == "sponge-forge" ]; then
