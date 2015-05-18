@@ -3,19 +3,23 @@
 # Minecraft Installer
 # Written for Ubuntu Sysems
 #
-# ./minecraft_install.sh -u username [-p plugin -s sponge_version -f forge_version -v vanilla_version]
+# ./minecraft_install.sh -b /home/ -u username [-p plugin -s sponge_version -f forge_version -v vanilla_version]
 
 # Allows enough time for PufferPanel to get the Feed
 sleep 5
 
 username=root
+base="/home/"
 plugin="vanilla"
 spongeVersion="1.8-1371-2.1DEV-430"
 forgeVersion="1.8-11.14.1.1334"
 vanillaVersion="1.8.4"
 
-while getopts ":u:s:f:p:v:" opt; do
+while getopts ":b:u:s:f:p:v:" opt; do
     case "$opt" in
+    b)
+        base=$OPTARG
+        ;;
     u)
         username=$OPTARG
         ;;
@@ -41,7 +45,12 @@ if [ "$username" == "root" ]; then
 
 fi;
 
-cd /home/$username/public
+if [ ! -d "${base}${username}/public" ]; then
+    echo "The home directory for the user (${base}${username}/public) does not exist on the system."
+    exit 1
+fi;
+
+cd ${base}${username}/public
 
 if [ "$plugin" == "spigot" ]; then
 
@@ -53,7 +62,7 @@ if [ "$plugin" == "spigot" ]; then
 
     git config --global --unset core.autocrlf
     java -jar BuildTools.jar
-    
+
     echo 'Removing BuildTools Files and Folders...'
     mv spigot*.jar ../server.jar
     rm -rf *

@@ -3,16 +3,20 @@
 # Minecraft Installer
 # Written for Ubuntu Sysems
 #
-# ./minecraft_install.sh -u username [-v version]
+# ./minecraft_install.sh -b /home/ -u username [-v version]
 
 # Allows enough time for PufferPanel to get the Feed
 sleep 5
 
 username=root
 bungeeVersion="lastSuccessfulBuild"
+base="/home/"
 
-while getopts ":u:v:" opt; do
+while getopts ":b:u:v:" opt; do
     case "$opt" in
+    b)
+        base=$OPTARG
+        ;;
 	v)
 		bungeeVersion=$OPTARG
 		;;
@@ -31,8 +35,12 @@ fi;
 
 shift $((OPTIND-1))
 
+if [ ! -d "${base}${username}/public" ]; then
+    echo "The home directory for the user (${base}${username}/public) does not exist on the system."
+    exit 1
+fi;
 
-cd /home/$username/public
+cd ${base}${username}/public
 
 echo "Retrieving Remote Files..."
 echo "http://ci.md-5.net/job/BungeeCord/${bungeeVersion}/artifact/bootstrap/target/BungeeCord.jar"

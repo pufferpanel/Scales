@@ -4,16 +4,20 @@
 # SRCDS Server Installer
 # Written for Ubuntu Sysems
 #
-# ./srcds_install.sh -u username gameid
+# ./srcds_install.sh -b /home/ -u username gameid
 # ==============================
 
 # Allows enough time for PufferPanel to get the Feed
 sleep 5
 
 username=root
+base="/home/"
 
-while getopts ":u:" opt; do
+while getopts ":b:u:" opt; do
     case "$opt" in
+    b)
+        base=$OPTARG
+        ;;
     u)
         username=$OPTARG
         ;;
@@ -29,7 +33,12 @@ fi;
 
 shift $((OPTIND-1))
 
-cd /home/${username}/public
+if [ ! -d "${base}${username}/public" ]; then
+    echo "The home directory for the user (${base}${username}/public) does not exist on the system."
+    exit 1
+fi;
+
+cd ${base}${username}/public
 
 mkdir steamcmd && cd steamcmd
 
@@ -41,10 +50,10 @@ cd ../
 chown -R ${username}:scalesuser *
 
 # SteamCMD is strange about the user who installs it and where it places some files.
-su - ${username} -c "cd public/steamcmd && ./steamcmd.sh +login anonymous +force_install_dir /home/${username}/public +app_update $1 +quit 2>&1"
+su - ${username} -c "cd public/steamcmd && ./steamcmd.sh +login anonymous +force_install_dir ${base}${username}/public +app_update $1 +quit 2>&1"
 
 # Save SRCDS Run File for MD5 Checking
-cd /home/${username}
+cd ${base}${username}
 cp public/srcds_run .
 
 chown -R ${username}:scalesuser *
