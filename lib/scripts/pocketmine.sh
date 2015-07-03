@@ -61,11 +61,11 @@ if [[ $wexit == 127 ]]; then
 fi
 if [[ $wexit == 0 ]]; then
     echo "wget is installed!"
-    echo "Starting download of PocketMine-MP installer using wget!"
+    echo "Starting download of PocketMine-MP installer using wget\!"
     wget http://get.pocketmine.net -O - | bash -s - -v $pocketmineChannel
 fi
 echo "The installation is now complete!"
-echo "Remember to answer any questions asked of you in the Server Control console!"
+echo "Remember to answer any questions asked of you in the Server Control console\!"
 
 chown -R $username *
 chmod -R +rw *
