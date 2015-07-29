@@ -10,3 +10,4 @@ data/*
 *.crt
 *.key
 *.csr
+Scales.iml
