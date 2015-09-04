@@ -18,7 +18,7 @@
         "async": "1.4.*",
         "binaryjs": "0.2.*",
         "date-utils": "1.2.*",
-        "dockerode": "2.2.",
+        "dockerode": "2.2.*",
         "forever": "0.15.*",
         "fs-extra": "0.24.*",
         "gamedig": "0.2.*",
