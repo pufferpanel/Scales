@@ -17,6 +17,7 @@
   "dependencies": {
     "async": "1.4.*",
     "binaryjs": "0.2.*",
+    "colors": "1.1.*",
     "date-utils": "1.2.*",
     "forever": "0.15.*",
     "fs-extra": "0.24.*",
@@ -35,7 +36,8 @@
     "trim": "0.0.*",
     "usage": "0.7.*",
     "userid": "0.2.*",
-    "winston": "1.0.*"
+    "winston": "1.0.*",
+    "yargs": "3.24.*"
   },
   "scripts": {
     "start": "forever start lib/scales.js",
