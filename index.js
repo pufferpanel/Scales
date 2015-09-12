@@ -7,20 +7,12 @@ var Proc = require('child_process');
 var Yargs = require('yargs').argv;
 var Logger = Rfr('lib/logger.js');
 
-if (Yargs.consoleLevel === 'verbose') {
-    Logger.info('PufferPanel running in verbose console output mode.');
-}
-
-if (Yargs.showMeta === true) {
-    Logger.info('PufferPanel will output log metadata to console.');
-}
-
 Logger.info('+ ========================================== +');
 Logger.info('| Scales logs all information, (inc. errors) |');
 Logger.info('| into the logs/ directory. Please check     |');
 Logger.info('| there before asking for help with bugs.    |');
 Logger.info('|                                            |');
-Logger.info('| '.reset + 'Submit bug reports at the following link: '.red + '  |');
+Logger.info('| '.reset + 'Submit bug reports at the following link: '.red + ' |');
 Logger.info('| https://github.com/PufferPanel/Scales      |');
 Logger.info('+ ========================================== +');
 
