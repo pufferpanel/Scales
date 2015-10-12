@@ -3,9 +3,11 @@
  * Licensed under a GPL-v3 license.
  */
 var Rfr = require('rfr');
+var Async = require('async');
 var Proc = require('child_process');
 var Yargs = require('yargs').argv;
 var Logger = Rfr('lib/logger.js');
+var Servers = Rfr('lib/initalize.js').servers;
 
 Logger.info('+ ========================================== +');
 Logger.info('| Scales logs all information, (inc. errors) |');
@@ -31,16 +33,15 @@ Rfr('lib/interfaces/socket.js');
 
 process.on('SIGINT', function () {
 
-    Logger.warn('Detected hard shutdown! Stopping all running docker containers.');
-    Proc.exec('docker stop $(docker ps -a -q)', function (err, stdout, stderr) {
+    Logger.warn('Detected hard shutdown! Stopping all running server containers.');
+    Async.forEachOf(Servers, function (value, key, next) {
 
-        if (err || stderr) {
+        Servers[key].dockerKillContainer();
+        return next();
 
-            Logger.error('An error occured while attempting to stop all running docker containers.', stderr);
-            process.exit(1);
-        }
+    }, function (err) {
 
-        Logger.warn('All running docker containers stopped successfully.');
+        Logger.warn('All running server containers stopped successfully.');
         process.exit(0);
 
     });
