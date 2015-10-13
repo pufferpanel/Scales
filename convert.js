@@ -80,8 +80,6 @@ Fs.readdir('./data/', function (err, files) {
                         json.gamehost + ':' + json.gameport + ':' + (this.ports[json.plugin] || 8080) + '/udp',
                         '-m',
                         json.build.memory + 'M',
-                        '-c',
-                        json.build.cpu,
                         '--blkio-weight=' + (json.build.io || 500),
                         '-u',
                         dockerUserInfo,
