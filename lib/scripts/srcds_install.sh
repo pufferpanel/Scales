@@ -12,15 +12,11 @@ sleep 5
 
 username=root
 base="/home/"
-dockerContainer=""
 
-while getopts ":b:d:u:" opt; do
+while getopts ":b:u:" opt; do
     case "$opt" in
     b)
         base=$OPTARG
-        ;;
-    d)
-        dockerContainer=$OPTARG
         ;;
     u)
         username=$OPTARG
@@ -63,14 +59,14 @@ echo "installer:~$ chmod +x steamcmd.sh"
 chmod +x steamcmd/steamcmd.sh
 
 # SteamCMD is strange about the user who installs it and where it places some files.
-echo "installer:~$ docker start ${dockerContainer}"
-docker start ${dockerContainer}
+echo "installer:~$ docker start ${username}"
+docker start ${username}
 
-echo "installer:~$ docker exec -it ${dockerContainer} steamcmd/steamcmd.sh +login anonymous +force_install_dir /home/container +app_update $1 +quit"
-docker exec -it ${dockerContainer} steamcmd/steamcmd.sh +login anonymous +force_install_dir /home/container +app_update $1 +quit
+echo "installer:~$ docker exec -it ${username} steamcmd/steamcmd.sh +login anonymous +force_install_dir /home/container +app_update $1 +quit"
+docker exec -it ${username} steamcmd/steamcmd.sh +login anonymous +force_install_dir /home/container +app_update $1 +quit
 
-echo "installer:~$ docker stop ${dockerContainer}"
-docker stop ${dockerContainer}
+echo "installer:~$ docker stop ${username}"
+docker stop ${username}
 
 # Save SRCDS Run File for MD5 Checking
 echo "installer:~$ cd ${base}${username}/public"
