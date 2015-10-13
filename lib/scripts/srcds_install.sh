@@ -12,11 +12,15 @@ sleep 5
 
 username=root
 base="/home/"
+dockerContainer=""
 
-while getopts ":b:u:" opt; do
+while getopts ":b:d:u:" opt; do
     case "$opt" in
     b)
         base=$OPTARG
+        ;;
+    d)
+        dockerContainer=$OPTARG
         ;;
     u)
         username=$OPTARG
@@ -40,22 +44,46 @@ fi;
 
 cd ${base}${username}/public
 
+echo "installer:~$ mkdir steamcmd && cd steamcmd"
 mkdir steamcmd && cd steamcmd
 
+echo "installer:~$ curl -O http://media.steampowered.com/installer/steamcmd_linux.tar.gz"
 curl -O http://media.steampowered.com/installer/steamcmd_linux.tar.gz
+
+echo "installer:~$ tar -xzvf steamcmd_linux.tar.gz && rm -rf steamcmd_linux.tar.gz"
 tar -xzvf steamcmd_linux.tar.gz && rm -rf steamcmd_linux.tar.gz
 
-cd ../
+echo "installer:~$ cd ${base}${username}/public"
+cd ${base}${username}/public
 
+echo "installer:~$ chown -R ${username}:scalesuser *"
 chown -R ${username}:scalesuser *
+
+echo "installer:~$ chmod +x steamcmd.sh"
+chmod +x steamcmd/steamcmd.sh
 
 # SteamCMD is strange about the user who installs it and where it places some files.
-su - ${username} -c "cd public/steamcmd && ./steamcmd.sh +login anonymous +force_install_dir ${base}${username}/public +app_update $1 +quit 2>&1"
+echo "installer:~$ docker start ${dockerContainer}"
+docker start ${dockerContainer}
+
+echo "installer:~$ docker exec -it ${dockerContainer} steamcmd/steamcmd.sh +login anonymous +force_install_dir /home/container +app_update $1 +quit"
+docker exec -it ${dockerContainer} steamcmd/steamcmd.sh +login anonymous +force_install_dir /home/container +app_update $1 +quit
+
+echo "installer:~$ docker stop ${dockerContainer}"
+docker stop ${dockerContainer}
 
 # Save SRCDS Run File for MD5 Checking
-cd ${base}${username}
-cp public/srcds_run .
+echo "installer:~$ cd ${base}${username}/public"
+cd ${base}${username}/public
 
+echo "installer:~$ mkdir -p .steam/sdk32"
+mkdir -p .steam/sdk32
+
+echo "installer:~$ cp steamcmd/linux32/steamclient.so .steam/sdk32/steamclient.so"
+cp -v steamcmd/linux32/steamclient.so .steam/sdk32/steamclient.so
+
+echo "installer:~$ chown -R ${username}:scalesuser *"
 chown -R ${username}:scalesuser *
 
+echo "installer:~$ exit 0"
 exit 0

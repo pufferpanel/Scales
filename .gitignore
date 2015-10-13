@@ -11,3 +11,5 @@ data/*
 *.key
 *.csr
 Scales.iml
+lib/process-old.js
+silent-sync.json

@@ -11,9 +11,9 @@ sleep 5
 username=root
 base="/home/"
 plugin="vanilla"
-spongeVersion="1.8-1371-2.1DEV-430"
-forgeVersion="1.8-11.14.1.1334"
-vanillaVersion="1.8.4"
+spongeVersion="1.8-1519-2.1DEV-693"
+forgeVersion="1.8-11.14.3.1519"
+vanillaVersion="1.8.8"
 
 while getopts ":b:u:s:f:p:v:" opt; do
     case "$opt" in
