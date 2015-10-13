@@ -33,9 +33,9 @@
     "yargs": "3.27.*"
   },
   "scripts": {
-    "start": "forever start lib/scales.js",
-    "start-verbose": "forever start lib/scales.js verbose",
-    "stop": "forever stop lib/scales.js"
+    "start": "forever start index.js",
+    "start-verbose": "node index.js --consoleLevel=verbose --showMeta=true",
+    "stop": "forever stop index.js"
   },
   "main": "index.js",
   "repository": {
