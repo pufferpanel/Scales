@@ -7,7 +7,6 @@ var Async = require('async');
 var Proc = require('child_process');
 var Yargs = require('yargs').argv;
 var Logger = Rfr('lib/logger.js');
-var Servers = Rfr('lib/initalize.js').servers;
 
 Logger.info('+ ========================================== +');
 Logger.info('| Scales logs all information, (inc. errors) |');
@@ -33,10 +32,15 @@ Rfr('lib/interfaces/socket.js');
 
 process.on('SIGINT', function () {
 
+    var Servers = Rfr('lib/initalize.js').servers;
+
     Logger.warn('Detected hard shutdown! Stopping all running server containers.');
     Async.forEachOf(Servers, function (value, key, next) {
 
-        Servers[key].dockerKillContainer();
+        if (typeof Servers[key] !== 'undefined') {
+            Servers[key].dockerKillContainer();
+        }
+
         return next();
 
     }, function (err) {
