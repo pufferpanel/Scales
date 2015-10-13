@@ -10,9 +10,7 @@ var Async = require('async');
 var Util = require('util');
 var Proc = require('child_process');
 var Pty = require('pty.js');
-var Config = {
-    global: Rfr('config.json')
-};
+var GlobalConfig = Rfr('config.json');
 
 Logger.info('Running Conversion Script.');
 
@@ -46,7 +44,7 @@ Fs.readdir('./data/', function (err, files) {
             var dockerUserInfo;
             Async.series([
                 function (callback) {
-                    Proc.exec(Util.format('stat -c \'%u:%g\' %s', Path.join(Config.global.basepath, json.user, 'public')), function (err, stdout, stderr) {
+                    Proc.exec(Util.format('stat -c \'%u:%g\' %s', Path.join(GlobalConfig.basepath, json.user, 'public')), function (err, stdout, stderr) {
 
                         if (err || stderr) {
                             Logger.error('An error occured while trying to determine user information for a docker container.', stderr);
@@ -84,7 +82,7 @@ Fs.readdir('./data/', function (err, files) {
                         '-u',
                         dockerUserInfo,
                         '-v',
-                        Path.join(Config.global.basepath, json.user, 'public') + ':/home/container',
+                        Path.join(GlobalConfig.basepath, json.user, 'public') + ':/home/container',
                         (json.plugin === 'bungeecord') ? 'pufferpanel/minecraft' : 'pufferpanel/' + json.plugin
                     ];
 
