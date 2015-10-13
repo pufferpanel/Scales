@@ -52,9 +52,6 @@ fi;
 
 cd ${base}${username}/public
 
-echo "installer:~$ docker start ${username}"
-docker start ${username}
-
 if [ "$plugin" == "spigot" ]; then
 
     # We will ignore -r for this since there is no easy way to do a specific version of Spigot.
@@ -63,8 +60,8 @@ if [ "$plugin" == "spigot" ]; then
     echo "https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar"
     curl -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
 
-    docker exec -it ${username} git config --global --unset core.autocrlf
-    docker exec -it ${username} java -jar BuildTools.jar
+    git config --global --unset core.autocrlf
+    java -jar BuildTools.jar
 
     echo 'Removing BuildTools Files and Folders...'
     mv spigot*.jar ../server.jar
@@ -77,7 +74,7 @@ elif [[ "$plugin" == "forge" || $plugin == "sponge-forge" ]]; then
     echo "http://files.minecraftforge.net/maven/net/minecraftforge/forge/${forgeVersion}/forge-${forgeVersion}-installer.jar"
     curl -o MinecraftForgeInstaller.jar http://files.minecraftforge.net/maven/net/minecraftforge/forge/${forgeVersion}/forge-${forgeVersion}-installer.jar
 
-    docker exec -it ${username} java -jar MinecraftForgeInstaller.jar --installServer
+    java -jar MinecraftForgeInstaller.jar --installServer
 
     mv forge-${forgeVersion}-universal.jar server.jar
     rm -f MinecraftForgeInstaller.jar
@@ -105,9 +102,6 @@ elif [[ "$plugin" == "vanilla" ]]; then
     curl -o server.jar https://s3.amazonaws.com/Minecraft.Download/versions/${vanillaVersion}/minecraft_server.${vanillaVersion}.jar
 
 fi
-
-echo "installer:~$ docker stop ${username}"
-docker stop ${username}
 
 echo 'Fixing permissions for downloaded files...'
 chown -R ${username}:scalesuser *
