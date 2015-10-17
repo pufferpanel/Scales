@@ -1,6 +1,6 @@
 {
   "name": "Scales",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Scales — the flexible, open source game management daemon built for PufferPanel.",
   "author": "Dane Everitt <dane@daneeveritt.com>",
   "devDependencies": {
