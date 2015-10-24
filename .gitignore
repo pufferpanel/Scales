@@ -13,3 +13,4 @@ data/*
 Scales.iml
 lib/process-old.js
 silent-sync.json
+logs/*
