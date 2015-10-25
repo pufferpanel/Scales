@@ -65,28 +65,52 @@ Fs.readdir('./data/', function (err, files) {
                     };
 
                     Logger.verbose(Util.format('Creating docker container for %s. This could take a few minutes if the container images are not on the server already.', json.name));
-                    dockerProcessParams = [
-                        'create',
-                        '-it',
-                        '--name',
-                        json.user,
-                        '-h',
-                        'docker',
-                        '-p',
-                        json.gamehost + ':' + json.gameport + ':' + (this.ports[json.plugin] || 8080),
-                        '-p',
-                        json.gamehost + ':' + json.gameport + ':' + (this.ports[json.plugin] || 8080) + '/udp',
-                        '-m',
-                        json.build.memory + 'M',
-                        '--blkio-weight=' + (json.build.io || 500),
-                        '-u',
-                        dockerUserInfo,
-                        '-v',
-                        Path.join(GlobalConfig.basepath, json.user, 'public') + ':/home/container',
-                        (json.plugin === 'bungeecord') ? 'pufferpanel/minecraft' : 'pufferpanel/' + json.plugin
-                    ];
 
-                    var dockerProcess = Pty.spawn('docker', dockerProcessParams);
+                    // Build Port Mapping
+                    var portMap = Util.format('-p %s:%s:%s -p %s:%s:%s/udp',
+                        json.gamehost,
+                        json.gameport,
+                        self.ports[json.plugin],
+                        json.gamehost,
+                        json.gameport,
+                        self.ports[json.plugin]
+                    );
+
+                    if (typeof json.build.mapping !== 'undefined') {
+
+                        var mappingObject = json.build.mapping;
+                        for (var ip in mappingObject) {
+
+                            for (var port in mappingObject[ip]) {
+                                // mapping localhost:internal to ip:external (docker --> host)
+                                portMap = Util.format('%s -p %s:%s:%s -p %s:%s:%s/udp',
+                                    portMap,
+                                    ip,
+                                    mappingObject[ip][port],
+                                    port,
+                                    ip,
+                                    mappingObject[ip][port],
+                                    port
+                                );
+                            }
+
+                        }
+
+                    }
+
+                    Logger.verbose(Util.format('Creating docker container for server %s', json.name));
+                    dockerProcessParams = Util.format('create -it --name %s -h docker -m %sM --blkio-weight=%s %s %s -u %s -v %s:/home/container %s',
+                        json.user,
+                        json.build.memory,
+                        json.build.io || 500,
+                        (json.build.cpu > 0) ? '--cpu-period=100 --cpu-quota=' + json.build.cpu : '',
+                        portMap,
+                        dockerUserInfo,
+                        Path.join(GlobalConfig.basepath, json.user, 'public'),
+                        (json.plugin === 'bungeecord') ? 'pufferpanel/minecraft' : 'pufferpanel/' + json.plugin
+                    );
+
+                    var dockerProcess = Pty.spawn('docker', dockerProcessParams.match(/\S+/g));
 
                     dockerProcess.on('data', function (data) {
                         Logger.info(data);
