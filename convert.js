@@ -99,11 +99,11 @@ Fs.readdir('./data/', function (err, files) {
                     }
 
                     Logger.verbose(Util.format('Creating docker container for server %s', json.name));
-                    dockerProcessParams = Util.format('create -it --name %s -h docker -m %sM --blkio-weight=%s %s %s -u %s -v %s:/home/container %s',
+                    dockerProcessParams = Util.format('create -it --name %s -h docker -m %sM --blkio-weight=%s --cpu-period=100000 --cpu-quota=%s %s -u %s -v %s:/home/container %s',
                         json.user,
                         json.build.memory,
                         json.build.io || 500,
-                        (json.build.cpu > 0) ? '--cpu-period=100 --cpu-quota=' + json.build.cpu : '',
+                        (json.build.cpu <= 0) ? -1 : (json.build.cpu * 1000),
                         portMap,
                         dockerUserInfo,
                         Path.join(GlobalConfig.basepath, json.user, 'public'),
