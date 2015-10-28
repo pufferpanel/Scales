@@ -27,10 +27,8 @@ while getopts ":b:u:v:" opt; do
 done
 
 if [ "${username}" == "root" ]; then
-
     echo "WARNING: Invalid Username Supplied."
     exit 1
-
 fi;
 
 shift $((OPTIND-1))

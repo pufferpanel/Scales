@@ -18,7 +18,6 @@ Logger.info('Running Conversion Script.');
 Fs.readdir('./data/', function (err, files) {
 
     if (err) {
-
         Logger.error('An error occured while trying to load files into memory.', err);
         throw err;
     }
@@ -44,6 +43,7 @@ Fs.readdir('./data/', function (err, files) {
             var dockerUserInfo;
             Async.series([
                 function (callback) {
+
                     Proc.exec(Util.format('stat -c \'%u:%g\' %s', Path.join(GlobalConfig.basepath, json.user, 'public')), function (err, stdout, stderr) {
 
                         if (err || stderr) {
@@ -53,7 +53,6 @@ Fs.readdir('./data/', function (err, files) {
 
                         dockerUserInfo = stdout.replace('\n', '');
                         return callback();
-
                     });
                 },
                 function (callback) {
@@ -77,10 +76,8 @@ Fs.readdir('./data/', function (err, files) {
                     );
 
                     if (typeof json.build.mapping !== 'undefined') {
-
                         var mappingObject = json.build.mapping;
                         for (var ip in mappingObject) {
-
                             for (var port in mappingObject[ip]) {
                                 // mapping localhost:internal to ip:external (docker --> host)
                                 portMap = Util.format('%s -p %s:%s:%s -p %s:%s:%s/udp',
@@ -93,9 +90,7 @@ Fs.readdir('./data/', function (err, files) {
                                     port
                                 );
                             }
-
                         }
-
                     }
 
                     Logger.verbose(Util.format('Creating docker container for server %s', json.name));
@@ -113,6 +108,7 @@ Fs.readdir('./data/', function (err, files) {
                     var dockerProcess = Pty.spawn('docker', dockerProcessParams.match(/\S+/g));
 
                     dockerProcess.on('data', function (data) {
+
                         Logger.info(data);
                     });
 
@@ -120,13 +116,9 @@ Fs.readdir('./data/', function (err, files) {
 
                         Logger.info(Util.format('Successfully added a new docker container for %s.', json.name));
                         return next();
-
                     });
-
                 }]);
-
         });
-
     }, function (err) {
 
         if (err) {
@@ -137,7 +129,5 @@ Fs.readdir('./data/', function (err, files) {
 
         Logger.info('All servers successfully migrated to new docker container setup.');
         process.exit(0);
-
     });
-
 });

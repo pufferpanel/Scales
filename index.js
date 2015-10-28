@@ -5,7 +5,6 @@
 var Rfr = require('rfr');
 var Async = require('async');
 var Proc = require('child_process');
-var Yargs = require('yargs').argv;
 var Logger = Rfr('lib/logger.js');
 
 Logger.info('+ ========================================== +');
@@ -24,7 +23,6 @@ Proc.exec('cd lib/scripts && chmod +x *.sh', function (err, stdout, stderr) {
     } else {
         Logger.verbose('All scripts in /lib/scripts successfully had their permissions updated.');
     }
-
 });
 
 Rfr('lib/interfaces/restify.js');
@@ -42,12 +40,9 @@ process.on('SIGINT', function () {
         }
 
         return next();
-
     }, function (err) {
 
         Logger.warn('All running server containers stopped successfully.');
         process.exit(0);
-
     });
-
 });

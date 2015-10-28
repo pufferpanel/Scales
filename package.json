@@ -33,7 +33,8 @@
   "scripts": {
     "start": "forever start index.js",
     "start-verbose": "node index.js --consoleLevel=verbose --showMeta=true",
-    "stop": "forever stop index.js"
+    "stop": "forever stop index.js",
+    "test": "eslint --plugin hapi lib/* index.js"
   },
   "main": "index.js",
   "repository": {
