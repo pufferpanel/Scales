@@ -31,7 +31,7 @@
     "yargs": "3.27.*"
   },
   "scripts": {
-    "start": "forever start index.js",
+    "start": "forever start index.js --minUptime=1000 --spinSleepTime=1000",
     "start-verbose": "node index.js --consoleLevel=verbose --showMeta=true",
     "stop": "forever stop index.js",
     "test": "eslint --plugin hapi lib/* index.js"
