@@ -5,6 +5,13 @@
 #
 # ./minecraft_install.sh -b /home/ -u username [-v version]
 
+function checkResponseCode() {
+    if [ $? -ne 0 ]; then
+        echo -e "An error occured while installing."
+        exit 1
+    fi
+}
+
 # Allows enough time for PufferPanel to get the Feed
 sleep 5
 
@@ -38,14 +45,17 @@ if [ ! -d "${base}${username}/public" ]; then
     exit 1
 fi;
 
+echo "installer:~$ cd ${base}${username}/public"
 cd ${base}${username}/public
+checkResponseCode
 
-echo "Retrieving Remote Files..."
-echo "http://ci.md-5.net/job/BungeeCord/${bungeeVersion}/artifact/bootstrap/target/BungeeCord.jar"
+echo "installer:~$ curl -o BungeeCord.jar http://ci.md-5.net/job/BungeeCord/${bungeeVersion}/artifact/bootstrap/target/BungeeCord.jar"
 curl -o BungeeCord.jar http://ci.md-5.net/job/BungeeCord/${bungeeVersion}/artifact/bootstrap/target/BungeeCord.jar
+checkResponseCode
 
-echo 'Fixing permissions for downloaded files...'
+echo "installer:~$ chown -R ${username}:scalesuser *"
 chown -R ${username}:scalesuser *
+checkResponseCode
 
-echo 'Exiting Installer'
+echo "installer:~$ exit 0"
 exit 0

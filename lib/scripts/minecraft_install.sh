@@ -5,6 +5,13 @@
 #
 # ./minecraft_install.sh -b /home/ -u username [-p plugin -s sponge_version -f forge_version -v vanilla_version]
 
+function checkResponseCode() {
+    if [ $? -ne 0 ]; then
+        echo -e "An error occured while installing."
+        exit 1
+    fi
+}
+
 # Allows enough time for PufferPanel to get the Feed
 sleep 5
 
@@ -49,50 +56,80 @@ if [ ! -d "${base}${username}/public" ]; then
 fi;
 
 cd ${base}${username}/public
+checkResponseCode
 
 if [ "$plugin" == "spigot" ]; then
     # We will ignore -r for this since there is no easy way to do a specific version of Spigot.
     # To install a specific version the user should manually build and upload files.
-    echo 'Downloading BuildTools for Spigot'
-    echo "https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar"
+    echo "installer:~$ curl -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar"
     curl -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
+    checkResponseCode
 
+    echo "installer:~$ git config --global --unset core.autocrlf"
     git config --global --unset core.autocrlf
+    checkResponseCode
+
+    echo "installer:~$ java -jar BuildTools.jar"
     java -jar BuildTools.jar
+    checkResponseCode
 
-    echo 'Removing BuildTools Files and Folders...'
+    echo "installer:~$ mv spigot*.jar ../server.jar"
     mv spigot*.jar ../server.jar
+    checkResponseCode
+
+    echo "installer:~$ rm -rf *"
     rm -rf *
+    checkResponseCode
+
+    echo "installer:~$ mv ../server.jar server.jar"
     mv ../server.jar server.jar
+    checkResponseCode
+
 elif [[ "$plugin" == "forge" || $plugin == "sponge-forge" ]]; then
-    echo "Downloading Forge Version ${forgeVersion}";
-    echo "http://files.minecraftforge.net/maven/net/minecraftforge/forge/${forgeVersion}/forge-${forgeVersion}-installer.jar"
+
+    echo "installer:~$ curl -o MinecraftForgeInstaller.jar http://files.minecraftforge.net/maven/net/minecraftforge/forge/${forgeVersion}/forge-${forgeVersion}-installer.jar"
     curl -o MinecraftForgeInstaller.jar http://files.minecraftforge.net/maven/net/minecraftforge/forge/${forgeVersion}/forge-${forgeVersion}-installer.jar
+    checkResponseCode
 
+    echo "installer:~$ java -jar MinecraftForgeInstaller.jar --installServer"
     java -jar MinecraftForgeInstaller.jar --installServer
+    checkResponseCode
 
+    echo "installer:~$ mv forge-${forgeVersion}-universal.jar server.jar"
     mv forge-${forgeVersion}-universal.jar server.jar
+    checkResponseCode
+
+    echo "installer:~$ rm -f MinecraftForgeInstaller.jar"
     rm -f MinecraftForgeInstaller.jar
+    checkResponseCode
 
     # Install Sponge Now
     if [ "$plugin" == "sponge-forge" ]; then
-        mkdir mods
-        cd mods
 
-        echo "Installing Sponge Version ${spongeVersion}"
-        echo "http://repo.spongepowered.org/maven/org/spongepowered/sponge/${spongeVersion}/sponge-${spongeVersion}.jar"
+        echo "installer:~$ mkdir mods"
+        mkdir -p mods
+        checkResponseCode
+
+        echo "installer:~$ cd mods"
+        cd mods
+        checkResponseCode
+
+        echo "installer:~$ curl -o sponge-${spongeVersion}.jar http://repo.spongepowered.org/maven/org/spongepowered/sponge/${spongeVersion}/sponge-${spongeVersion}.jar"
         curl -o sponge-${spongeVersion}.jar http://repo.spongepowered.org/maven/org/spongepowered/sponge/${spongeVersion}/sponge-${spongeVersion}.jar
+        checkResponseCode
+
     fi
 elif [ "$plugin" == "sponge" ]; then
     echo 'Sponge Standalone is not currently suported in this version.';
 elif [[ "$plugin" == "vanilla" ]]; then
-    echo "Downloading Remote File..."
-    echo "https://s3.amazonaws.com/Minecraft.Download/versions/${vanillaVersion}/minecraft_server.${vanillaVersion}.jar"
+    echo "installer:~$ curl -o server.jar https://s3.amazonaws.com/Minecraft.Download/versions/${vanillaVersion}/minecraft_server.${vanillaVersion}.jar"
     curl -o server.jar https://s3.amazonaws.com/Minecraft.Download/versions/${vanillaVersion}/minecraft_server.${vanillaVersion}.jar
+    checkResponseCode
 fi
 
-echo 'Fixing permissions for downloaded files...'
+echo "installer:~$ chown -R ${username}:scalesuser *"
 chown -R ${username}:scalesuser *
+checkResponseCode
 
-echo 'Exiting Installer'
+echo "installer:~$ exit 0"
 exit 0
