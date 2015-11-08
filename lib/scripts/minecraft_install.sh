@@ -67,7 +67,6 @@ if [ "$plugin" == "spigot" ]; then
 
     echo "installer:~$ git config --global --unset core.autocrlf"
     git config --global --unset core.autocrlf
-    checkResponseCode
 
     echo "installer:~$ java -jar BuildTools.jar"
     java -jar BuildTools.jar
