@@ -16,7 +16,7 @@ Logger.info('| '.reset + 'Submit bug reports at the following link: '.red + ' |'
 Logger.info('| https://github.com/PufferPanel/Scales      |');
 Logger.info('+ ========================================== +');
 
-Proc.exec('cd lib/scripts && chmod +x *.sh', function (err, stdout, stderr) {
+Proc.exec('find ./lib/scripts -name "*.sh" -exec chmod +x {} \\;', function (err, stdout, stderr) {
 
     if (err) {
         Logger.error('An error occured while attempting to correct script permissions on boot.', stderr);
