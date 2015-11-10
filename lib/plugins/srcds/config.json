@@ -1,0 +1,16 @@
+{
+    "name": "SRCDS",
+    "stop": "quit",
+    "exe": "./srcds_run",
+    "pgrep_exe": "srcds_linux",
+    "trigger": {
+        "started": "to Steam servers"
+    },
+    "install_script": "srcds_install.sh",
+    "manual_log": true,
+    "log": ".scales/latest.log",
+    "ports": {
+        "listen": 27015
+    },
+    "query_type": "protocol-valve"
+}

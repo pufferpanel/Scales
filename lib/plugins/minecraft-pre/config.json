@@ -1,0 +1,17 @@
+{
+    "name": "Minecraft-Pre",
+    "stop": "stop",
+    "exe": "java",
+    "pgrep_exe": "java",
+    "cfg": "server.properties",
+    "trigger": {
+        "started": ")! For help, type ",
+        "eula": "Go to eula.txt for more info."
+    },
+    "install_script": "minecraft_install.sh",
+    "log": "server.log",
+    "ports": {
+        "listen": 25565
+    },
+    "query_type": "minecraftping"
+}
