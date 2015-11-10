@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# ==============================
-# SRCDS Server Installer
-# Written for Ubuntu Sysems
-#
-# ./srcds_install.sh -b /home/ -u username gameid
-# ==============================
-
 function checkResponseCode() {
     if [ $? -ne 0 ]; then
         echo -e "An error occured while installing."

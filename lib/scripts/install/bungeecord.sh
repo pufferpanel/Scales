@@ -1,9 +1,4 @@
 #!/bin/bash
-#
-# Minecraft Installer
-# Written for Ubuntu Sysems
-#
-# ./minecraft_install.sh -b /home/ -u username [-v version]
 
 function checkResponseCode() {
     if [ $? -ne 0 ]; then

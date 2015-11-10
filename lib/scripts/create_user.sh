@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# ==============================
-# Scales User Management Script
-# Written for Ubuntu Sysems
-#
-# ./create_user.sh /home/ username password
-# ==============================
-
 useradd -m -d $1$2 -s /bin/false -p $(openssl passwd -1 $3) $2
 usermod -G scalesuser $2
 
