@@ -1,0 +1,16 @@
+{
+    "name": "PocketMine-MP",
+    "stop": "stop",
+    "exe": "./start.sh",
+    "pgrep_exe": "php",
+    "cfg": "server.properties",
+    "trigger": {
+        "started": ")! For help, type "
+    },
+    "install_script": "install/pocketmine.sh",
+    "log": "server.log",
+    "ports": {
+        "listen": 19132
+    },
+    "query_type": "minecraftping"
+}
