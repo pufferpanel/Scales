@@ -53,6 +53,10 @@ fi;
 cd ${base}${username}/public
 checkResponseCode
 
+echo "installer:~$ rm -rf *"
+rm -rf *
+checkResponseCode
+
 if [ "$plugin" == "spigot" ]; then
     # We will ignore -r for this since there is no easy way to do a specific version of Spigot.
     # To install a specific version the user should manually build and upload files.

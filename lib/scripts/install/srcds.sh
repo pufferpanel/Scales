@@ -39,6 +39,10 @@ fi;
 cd ${base}${username}/public
 checkResponseCode
 
+echo "installer:~$ rm -rf *"
+rm -rf *
+checkResponseCode
+
 echo "installer:~$ mkdir steamcmd && cd steamcmd"
 mkdir steamcmd && cd steamcmd
 checkResponseCode

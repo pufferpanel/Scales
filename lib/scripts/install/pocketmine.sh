@@ -44,6 +44,10 @@ echo "installer:~$ cd ${base}${username}/public"
 cd ${base}${username}/public
 checkResponseCode
 
+echo "installer:~$ rm -rf *"
+rm -rf *
+checkResponseCode
+
 echo "installer:~$ curl -L -o install.sh https://get.pocketmine.net/"
 curl -L -o install.sh https://get.pocketmine.net/
 checkResponseCode

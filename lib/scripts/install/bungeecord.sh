@@ -44,6 +44,10 @@ echo "installer:~$ cd ${base}${username}/public"
 cd ${base}${username}/public
 checkResponseCode
 
+echo "installer:~$ rm -rf *"
+rm -rf *
+checkResponseCode
+
 echo "installer:~$ curl -o BungeeCord.jar http://ci.md-5.net/job/BungeeCord/${bungeeVersion}/artifact/bootstrap/target/BungeeCord.jar"
 curl -o BungeeCord.jar http://ci.md-5.net/job/BungeeCord/${bungeeVersion}/artifact/bootstrap/target/BungeeCord.jar
 checkResponseCode
