@@ -6,7 +6,7 @@
     "trigger": {
         "started": "to Steam servers"
     },
-    "install_script": "srcds_install.sh",
+    "install_script": "install/srcds.sh",
     "manual_log": true,
     "log": ".scales/latest.log",
     "ports": {

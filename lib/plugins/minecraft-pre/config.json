@@ -8,7 +8,7 @@
         "started": ")! For help, type ",
         "eula": "Go to eula.txt for more info."
     },
-    "install_script": "minecraft_install.sh",
+    "install_script": "install/minecraft.sh",
     "log": "server.log",
     "ports": {
         "listen": 25565

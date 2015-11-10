@@ -7,7 +7,7 @@
     "trigger": {
         "started": "[INFO] Listening on "
     },
-    "install_script": "bungeecord_install.sh",
+    "install_script": "install/bungeecord.sh",
     "log": "proxy.log.0",
     "ports": {
         "listen": 25565
