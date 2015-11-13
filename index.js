@@ -28,6 +28,10 @@ Proc.exec('find ./lib/scripts -name "*.sh" -exec chmod +x {} \\;', function (err
 Rfr('lib/interfaces/restify.js');
 Rfr('lib/interfaces/socket.js');
 
+process.on('uncaughtException', function (err) {
+    Logger.error(err, err.stack);
+});
+
 process.on('SIGINT', function () {
 
     var Servers = Rfr('lib/initalize.js').servers;
