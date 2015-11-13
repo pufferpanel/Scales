@@ -21,12 +21,13 @@ Proc.exec('find ./lib/scripts -name "*.sh" -exec chmod +x {} \\;', function (err
     if (err) {
         Logger.error('An error occured while attempting to correct script permissions on boot.', stderr);
     } else {
+
         Logger.verbose('All scripts in /lib/scripts successfully had their permissions updated.');
+        Rfr('lib/interfaces/restify.js');
+        Rfr('lib/interfaces/socket.js');
+
     }
 });
-
-Rfr('lib/interfaces/restify.js');
-Rfr('lib/interfaces/socket.js');
 
 process.on('SIGINT', function () {
 
