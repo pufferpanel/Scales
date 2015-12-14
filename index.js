@@ -37,7 +37,7 @@ process.on('SIGINT', function () {
     Async.forEachOf(Servers, function (value, key, next) {
 
         if (typeof Servers[key] !== 'undefined') {
-            Servers[key].dockerKillContainer();
+            Servers[key]._kill();
         }
 
         return next();
