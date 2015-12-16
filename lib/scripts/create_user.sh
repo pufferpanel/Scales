@@ -6,6 +6,5 @@ usermod -G scalesuser $2
 chown root:root $1$2
 chmod 755 $1$2
 
-cd $1$2
-mkdir public backups
+mkdir $1$2/public $1$2/backups
 chown $2:scalesuser *

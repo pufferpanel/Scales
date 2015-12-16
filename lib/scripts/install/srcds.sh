@@ -12,14 +12,18 @@ sleep 5
 
 username=root
 base="/home/"
+useDocker="false"
 
-while getopts ":b:u:" opt; do
+while getopts ":b:u:d" opt; do
     case "$opt" in
     b)
         base=$OPTARG
         ;;
     u)
         username=$OPTARG
+        ;;
+    d)
+        useDocker="true"
         ;;
     esac
 done
@@ -67,18 +71,24 @@ echo "installer:~$ chmod +x steamcmd.sh"
 chmod +x steamcmd/steamcmd.sh
 checkResponseCode
 
-# SteamCMD is strange about the user who installs it and where it places some files.
-echo "installer:~$ docker start ${username}"
-docker start ${username}
-checkResponseCode
+if [[ "${useDocker}" == "true" ]]; then
+    # SteamCMD is strange about the user who installs it and where it places some files.
+    echo "installer:~$ docker start ${username}"
+    docker start ${username}
+    checkResponseCode
 
-echo "installer:~$ docker exec -it ${username} steamcmd/steamcmd.sh +login anonymous +force_install_dir /home/container +app_update $1 +quit"
-docker exec -it ${username} steamcmd/steamcmd.sh +login anonymous +force_install_dir /home/container +app_update $1 +quit
-checkResponseCode
+    echo "installer:~$ docker exec -it ${username} steamcmd/steamcmd.sh +login anonymous +force_install_dir /home/container +app_update $1 +quit"
+    docker exec -it ${username} steamcmd/steamcmd.sh +login anonymous +force_install_dir /home/container +app_update $1 +quit
+    checkResponseCode
 
-echo "installer:~$ docker stop ${username}"
-docker stop ${username}
-checkResponseCode
+    echo "installer:~$ docker stop ${username}"
+    docker stop ${username}
+    checkResponseCode
+else
+    echo "installer:~$ steamcmd/steamcmd.sh +login anonymous +force_install_dir /home/container +app_update $1 +quit"
+    steamcmd/steamcmd.sh +login anonymous +force_install_dir /home/container +app_update $1 +quit
+    checkResponseCode
+fi
 
 # Save SRCDS Run File for MD5 Checking
 echo "installer:~$ cd ${base}${username}/public"
