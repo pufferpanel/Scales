@@ -6,6 +6,7 @@ var Rfr = require('rfr');
 var Async = require('async');
 var Proc = require('child_process');
 var Logger = Rfr('lib/logger.js');
+var Config = Rfr('config.json');
 
 Logger.info('+ ========================================== +');
 Logger.info('| Scales logs all information, (inc. errors) |');
@@ -16,16 +17,16 @@ Logger.info('| '.reset + 'Submit bug reports at the following link: '.red + ' |'
 Logger.info('| https://github.com/PufferPanel/Scales      |');
 Logger.info('+ ========================================== +');
 
+Logger.verbose('Using docker?: ' + ((typeof Config.useDocker === 'undefined') || (Config.useDocker) == true));
+
 Proc.exec('find ./lib/scripts -name "*.sh" -exec chmod +x {} \\;', function (err, stdout, stderr) {
 
     if (err) {
-        Logger.error('An error occured while attempting to correct script permissions on boot.', stderr);
+        Logger.error('An error occurred while attempting to correct script permissions on boot.', stderr);
     } else {
-
         Logger.verbose('All scripts in /lib/scripts successfully had their permissions updated.');
         Rfr('lib/interfaces/restify.js');
         Rfr('lib/interfaces/socket.js');
-
     }
 });
 
