@@ -85,8 +85,8 @@ if [[ "${useDocker}" == "true" ]]; then
     docker stop ${username}
     checkResponseCode
 else
-    echo "installer:~$ steamcmd/steamcmd.sh +login anonymous +force_install_dir /home/container +app_update $1 +quit"
-    steamcmd/steamcmd.sh +login anonymous +force_install_dir /home/container +app_update $1 +quit
+    echo "installer:~$ steamcmd/steamcmd.sh +login anonymous +force_install_dir ${base}${username} +app_update $1 +quit"
+    steamcmd/steamcmd.sh +login anonymous +force_install_dir ${base}${username} +app_update $1 +quit
     checkResponseCode
 fi
 
