@@ -17,7 +17,7 @@ Logger.info('| '.reset + 'Submit bug reports at the following link: '.red + ' |'
 Logger.info('| https://github.com/PufferPanel/Scales      |');
 Logger.info('+ ========================================== +');
 
-Logger.verbose('Using docker?: ' + ((typeof Config.useDocker === 'undefined') || (Config.useDocker) == true));
+Logger.verbose('Using docker?: ' + ((typeof Config.docker === 'undefined') || (Config.docker) == true));
 
 Proc.exec('find ./lib/scripts -name "*.sh" -exec chmod +x {} \\;', function (err, stdout, stderr) {
 
