@@ -23,28 +23,29 @@ Proc.exec('find ./lib/scripts -name "*.sh" -exec chmod +x {} \\;', function (err
 
     if (err) {
         Logger.error('An error occurred while attempting to correct script permissions on boot.', stderr);
+        process.exit(1);
     } else {
         Logger.verbose('All scripts in /lib/scripts successfully had their permissions updated.');
         Rfr('lib/interfaces/restify.js');
         Rfr('lib/interfaces/socket.js');
+
+        process.on('SIGINT', function () {
+
+            var servers = Rfr('lib/initalize.js').servers;
+
+            Logger.warn('Detected hard shutdown! Stopping all running server containers.');
+            Async.forEachOf(servers, function (value, key, next) {
+
+                if (typeof servers[key] !== 'undefined') {
+                    servers[key]._kill();
+                }
+
+                return next();
+            }, function (err) {
+
+                Logger.warn('All running server containers stopped successfully.');
+                process.exit(0);
+            });
+        });
     }
-});
-
-process.on('SIGINT', function () {
-
-    var Servers = Rfr('lib/initalize.js').servers;
-
-    Logger.warn('Detected hard shutdown! Stopping all running server containers.');
-    Async.forEachOf(Servers, function (value, key, next) {
-
-        if (typeof Servers[key] !== 'undefined') {
-            Servers[key]._kill();
-        }
-
-        return next();
-    }, function (err) {
-
-        Logger.warn('All running server containers stopped successfully.');
-        process.exit(0);
-    });
 });
