@@ -5,6 +5,7 @@
 var Rfr = require('rfr');
 var Async = require('async');
 var Proc = require('child_process');
+var Util = require('util');
 var Logger = Rfr('lib/logger.js');
 var Config = Rfr('config.json');
 
@@ -37,7 +38,11 @@ Proc.exec('find ./lib/scripts -name "*.sh" -exec chmod +x {} \\;', function (err
             Async.forEachOf(servers, function (value, key, next) {
 
                 if (typeof servers[key] !== 'undefined') {
-                    servers[key]._kill();
+                    try {
+                        servers[key]._stop();
+                    } catch (err) {
+                        Logger.error(Util.format('Unexpected error shutting down server %s', key), err);
+                    }
                 }
 
                 return next();
