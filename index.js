@@ -34,12 +34,13 @@ Proc.exec('find ./lib/scripts -name "*.sh" -exec chmod +x {} \\;', function (err
 
             var servers = Rfr('lib/initalize.js').servers;
 
-            Logger.warn('Detected hard shutdown! Stopping all running server containers.');
+            Logger.warn('Detected shutdown! Stopping all running server containers.');
             Async.forEachOf(servers, function (value, key, next) {
 
                 if (typeof servers[key] !== 'undefined') {
                     try {
-                        servers[key]._stop();
+                        servers[key]._stop(function () {
+                        });
                     } catch (err) {
                         Logger.error(Util.format('Unexpected error shutting down server %s', key), err);
                     }
@@ -48,7 +49,11 @@ Proc.exec('find ./lib/scripts -name "*.sh" -exec chmod +x {} \\;', function (err
                 return next();
             }, function (err) {
 
+                if(err) {
+                    Logger.error('An error was detected while shutting down', err);
+                }
                 Logger.warn('All running server containers stopped successfully.');
+                Logger.shutdown();
                 process.exit(0);
             });
         });
