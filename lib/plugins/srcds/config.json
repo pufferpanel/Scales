@@ -12,5 +12,6 @@
     "ports": {
         "listen": 27015
     },
-    "query_type": "protocol-valve"
+    "query_type": "protocol-valve",
+    "start_dir": "."
 }
