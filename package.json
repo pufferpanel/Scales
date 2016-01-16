@@ -12,7 +12,6 @@
     "binaryjs": "0.2.*",
     "colors": "1.1.*",
     "date-utils": "1.2.*",
-    "forever": "0.15.*",
     "fs-extra": "0.26.*",
     "gamedig": "0.2.*",
     "js-yaml": "3.4.*",
@@ -32,9 +31,8 @@
     "yargs": "3.*.0"
   },
   "scripts": {
-    "start": "forever start index.js --minUptime=1000 --spinSleepTime=1000",
+    "start": "node index.js",
     "start-verbose": "node index.js --consoleLevel=verbose --showMeta=true",
-    "stop": "forever stop index.js",
     "test": "eslint --plugin hapi lib/* index.js"
   },
   "main": "index.js",
