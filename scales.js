@@ -81,13 +81,8 @@ switch (process.argv[2]) {
     case 'debug':
     {
         console.log('Starting Scales with debug view');
-        var devProc = Proc.spawn('npm', ['run-script', 'start-verbose'], {
-            env: process.env,
-            stdio: [0, 1, 2]
-        });
-
-        devProc.on('close', function (code) {
-            process.exit(code);
+        Proc.fork(__dirname, ['--consoleLevel=verbose', '--showMeta', '--nodaemon'], {
+            env: process.env
         });
         break;
     }
@@ -106,7 +101,7 @@ switch (process.argv[2]) {
     {
         console.log('Scales - PufferPanel Daemon');
         console.log('Usage:');
-        console.log('./scales {start|stop|status|dev}');
+        console.log('./scales {start|stop|status|debug}');
         console.log('    start  - Starts the Scales service');
         console.log('    stop   - Stops the Scales service');
         console.log('    status - Shows the status of the Scales service');
