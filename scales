@@ -43,7 +43,6 @@ switch (process.argv[2]) {
             Proc.fork(__dirname + '', {
                 env: process.env
             });
-            console.log('Start process began, use ' + './scales status'.bold + ' to check if it\'s running');
         });
 
         break;
@@ -62,11 +61,12 @@ switch (process.argv[2]) {
             var waiting = function () {
                 try {
                     process.kill(pid, 0);
-                    setTimeout(waiting, 1000);
+                    process.stdout.write('.');
+                    setTimeout(waiting, 50);
                 } catch (e) {
+                    process.stdout.write('\n');
                 }
-            }
-            console.log('Kill sent, waiting for process to terminate');
+            };
             waiting();
         });
         break;

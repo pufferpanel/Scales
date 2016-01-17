@@ -68,7 +68,6 @@ process.on('SIGINT', function () {
         }
         Logger.warn('All running server containers stopped successfully.');
         Logger.shutdown();
-        sleep(2);
         Fs.unlinkSync(pidFilePath);
         process.exit(0);
     });
