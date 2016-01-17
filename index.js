@@ -12,6 +12,7 @@ var Config = Rfr('config.json');
 var Vargs = require('yargs');
 
 var cliArgs = Vargs.argv;
+var pidFilePath = __dirname + '/scales.pid';
 
 Logger.info('+ ========================================== +');
 Logger.info('| Scales logs all information, (inc. errors) |');
@@ -21,8 +22,6 @@ Logger.info('|                                            |');
 Logger.info('| '.reset + 'Submit bug reports at the following link: '.red + ' |');
 Logger.info('| https://github.com/PufferPanel/Scales      |');
 Logger.info('+ ========================================== +');
-
-var pidFilePath = __dirname + '/scales.pid';
 
 Logger.verbose('Using docker?: ' + ((typeof Config.docker === 'undefined') || (Config.docker) == true));
 
@@ -41,9 +40,9 @@ Rfr('lib/interfaces/socket.js');
 Logger.info('Scales has started');
 if (!cliArgs.nodaemon) {
     require('daemon')();
+    Fs.writeFileSync(pidFilePath, process.pid);
 }
 
-Fs.writeFileSync(pidFilePath, process.pid);
 process.on('SIGINT', function () {
 
     var servers = Rfr('lib/initalize.js').servers;
@@ -68,7 +67,9 @@ process.on('SIGINT', function () {
         }
         Logger.warn('All running server containers stopped successfully.');
         Logger.shutdown();
-        Fs.unlinkSync(pidFilePath);
+        if (!cliArgs.nodaemon) {
+            Fs.unlinkSync(pidFilePath);
+        }
         process.exit(0);
     });
 });
