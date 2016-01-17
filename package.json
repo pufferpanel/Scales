@@ -11,6 +11,7 @@
     "async": "1.5.*",
     "binaryjs": "0.2.*",
     "colors": "1.1.*",
+    "daemon": "1.1.*",
     "date-utils": "1.2.*",
     "fs-extra": "0.26.*",
     "gamedig": "0.2.*",
@@ -31,8 +32,9 @@
     "yargs": "3.*.0"
   },
   "scripts": {
-    "start": "node index.js",
-    "start-verbose": "node index.js --consoleLevel=verbose --showMeta=true",
+    "start": "./scales start",
+    "stop": "./scales stop",
+    "start-verbose": "node index.js --consoleLevel=verbose --showMeta=true --nodaemon",
     "test": "eslint --plugin hapi lib/* index.js"
   },
   "main": "index.js",
