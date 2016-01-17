@@ -34,14 +34,45 @@ Proc.execSync('find ./lib/scripts -name "*.sh" -exec chmod +x {} \\;', function 
 });
 
 Logger.verbose('All scripts in /lib/scripts successfully had their permissions updated.');
+
+var httpReady = false;
+var serversReady = false;
+
+var wait = function () {
+    if (readyForDaemon()) {
+        if (!cliArgs.nodaemon) {
+            Logger.info('Scales has started');
+            require('daemon')();
+            Fs.writeFileSync(pidFilePath, process.pid);
+        }
+    } else {
+        setTimeout(wait, 500);
+    }
+};
+
+process.on('uncaughtException', function (err) {
+    if (!readyForDaemon()) {
+        process.exit(0);
+    }
+});
+
+var readyForDaemon = function () {
+    return httpReady && serversReady;
+}
+
+var Index = {
+    httpStarted: function () {
+        httpReady = true;
+    },
+    serversInit: function () {
+        serversReady = true;
+    }
+};
+
+module.exports = Index;
+
 Rfr('lib/interfaces/restify.js');
 Rfr('lib/interfaces/socket.js');
-
-Logger.info('Scales has started');
-if (!cliArgs.nodaemon) {
-    require('daemon')();
-    Fs.writeFileSync(pidFilePath, process.pid);
-}
 
 process.on('SIGINT', function () {
 
@@ -73,3 +104,5 @@ process.on('SIGINT', function () {
         process.exit(0);
     });
 });
+
+wait();
