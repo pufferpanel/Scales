@@ -38,7 +38,7 @@ Logger.verbose('All scripts in /lib/scripts successfully had their permissions u
 Rfr('lib/interfaces/restify.js');
 Rfr('lib/interfaces/socket.js');
 
-Logger.info('Scales has completed started');
+Logger.info('Scales has started');
 if (!cliArgs.nodaemon) {
     require('daemon')();
 }
