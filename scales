@@ -4,6 +4,7 @@
  * Licensed under a GPL-v3 license.
  */
 
+require('colors');
 var Proc = require('child_process');
 var Fs = require('fs-extra');
 
@@ -32,10 +33,19 @@ switch (process.argv[2]) {
     case 'start':
     {
         console.log('Starting Scales');
-        Proc.fork(__dirname + '', {
-            env: process.env
+
+        getRunningPid(function (err, pid) {
+            if (pid) {
+                console.log('Process already running: ' + pid);
+                process.exit(1);
+            }
+
+            Proc.fork(__dirname + '', {
+                env: process.env
+            });
+            console.log('Start process began, use ' + './scales status'.bold + ' to check if it\'s running');
         });
-        console.log('Start process began, use ' + './scales status'.bold + ' to check if it\'s running');
+
         break;
     }
 
