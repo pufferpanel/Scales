@@ -47,7 +47,6 @@ switch (process.argv[2]) {
 
         break;
     }
-
     case 'stop':
     {
         console.log('Stopping Scales');
@@ -79,10 +78,9 @@ switch (process.argv[2]) {
         });
         break;
     }
-
-    case 'dev':
+    case 'debug':
     {
-        console.log('Starting Scales with dev view');
+        console.log('Starting Scales with debug view');
         var devProc = Proc.spawn('npm', ['run-script', 'start-verbose'], {
             env: process.env,
             stdio: [0, 1, 2]
@@ -90,6 +88,17 @@ switch (process.argv[2]) {
 
         devProc.on('close', function (code) {
             process.exit(code);
+        });
+        break;
+    }
+    case 'status':
+    {
+        getRunningPid(function (err, pid) {
+            if (err) {
+                console.log('Scales is not running');
+            } else {
+                console.log('Scales is running (pid: ' + pid + ')');
+            }
         });
         break;
     }
@@ -101,7 +110,7 @@ switch (process.argv[2]) {
         console.log('    start  - Starts the Scales service');
         console.log('    stop   - Stops the Scales service');
         console.log('    status - Shows the status of the Scales service');
-        console.log('    dev    - Run the Scales service in a debug view');
+        console.log('    debug  - Run the Scales service in a debug view');
         break;
     }
 }
