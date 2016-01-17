@@ -10,7 +10,6 @@ var Fs = require('fs-extra');
 var Logger = Rfr('lib/logger.js');
 var Config = Rfr('config.json');
 var Vargs = require('yargs');
-var sleep = require('sleep').sleep;
 
 var cliArgs = Vargs.argv;
 
