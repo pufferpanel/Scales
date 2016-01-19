@@ -18,6 +18,17 @@ case "$1" in
         ;;
 
     node_install)
+        apt-get --version 1>/dev/null 2>&1
+        if [ $? -eq 0 ]; then
+            apt-get install -y openssl curl make gcc g++ tar
+        else
+            yum --version 1>/dev/null 2>&1
+            if [ $? -eq 0 ]; then
+                yum install -y openssl curl make gcc gcc-c++ tar
+            else
+                echo "Unsupported distro detected, cannot install system dependencies"
+            fi
+        fi
         npm install
         ;;
     *)
