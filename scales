@@ -20,11 +20,11 @@ case "$1" in
     node_install)
         apt-get --version 1>/dev/null 2>&1
         if [ $? -eq 0 ]; then
-            apt-get install -y openssl curl make gcc g++ tar
+            apt-get install -y openssl curl make gcc g++ tar lib32gcc1 lib32tinfo5 lib32z1 lib32stdc++6 openjdk-7-jdk
         else
             yum --version 1>/dev/null 2>&1
             if [ $? -eq 0 ]; then
-                yum install -y openssl curl make gcc gcc-c++ tar
+                yum install -y openssl curl make gcc gcc-c++ tar java-1.8.0-openjdk-devel tar python glibc.i686 libstdc++.i686
             else
                 echo "Unsupported distro detected, cannot install system dependencies"
             fi
