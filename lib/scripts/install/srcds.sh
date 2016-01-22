@@ -12,14 +12,18 @@ sleep 5
 
 username=root
 base="/home/"
+useDocker="false"
 
-while getopts ":b:u:" opt; do
+while getopts ":b:u:d" opt; do
     case "$opt" in
     b)
         base=$OPTARG
         ;;
     u)
         username=$OPTARG
+        ;;
+    d)
+        useDocker="true"
         ;;
     esac
 done
@@ -67,17 +71,8 @@ echo "installer:~$ chmod +x steamcmd.sh"
 chmod +x steamcmd/steamcmd.sh
 checkResponseCode
 
-# SteamCMD is strange about the user who installs it and where it places some files.
-echo "installer:~$ docker start ${username}"
-docker start ${username}
-checkResponseCode
-
-echo "installer:~$ docker exec -it ${username} steamcmd/steamcmd.sh +login anonymous +force_install_dir /home/container +app_update $1 +quit"
-docker exec -it ${username} steamcmd/steamcmd.sh +login anonymous +force_install_dir /home/container +app_update $1 +quit
-checkResponseCode
-
-echo "installer:~$ docker stop ${username}"
-docker stop ${username}
+echo "installer:~$ steamcmd/steamcmd.sh +login anonymous +force_install_dir ${base}${username}/public +app_update $1 +quit"
+steamcmd/steamcmd.sh +login anonymous +force_install_dir ${base}${username}/public +app_update $1 +quit
 checkResponseCode
 
 # Save SRCDS Run File for MD5 Checking
@@ -93,7 +88,7 @@ echo "installer:~$ cp steamcmd/linux32/steamclient.so .steam/sdk32/steamclient.s
 cp -v steamcmd/linux32/steamclient.so .steam/sdk32/steamclient.so
 checkResponseCode
 
-echo "installer:~$ chown -R ${username}:scalesuser *"
+echo "installer:~$ chown -R ${username}:scalesuser * .steam"
 chown -R ${username}:scalesuser *
 checkResponseCode
 

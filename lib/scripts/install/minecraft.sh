@@ -2,7 +2,7 @@
 
 function checkResponseCode() {
     if [ $? -ne 0 ]; then
-        echo -e "An error occured while installing."
+        echo -e "An error occurred while installing."
         exit 1
     fi
 }
@@ -16,8 +16,9 @@ plugin="vanilla"
 spongeVersion="1.8-1519-2.1DEV-693"
 forgeVersion="1.8-11.14.3.1519"
 vanillaVersion="1.8.8"
+useDocker="false";
 
-while getopts ":b:u:s:f:p:v:" opt; do
+while getopts ":b:u:s:f:p:v:d" opt; do
     case "$opt" in
     b)
         base=$OPTARG
@@ -36,6 +37,9 @@ while getopts ":b:u:s:f:p:v:" opt; do
         ;;
     v)
         vanillaVersion=$OPTARG
+        ;;
+    d)
+        useDocker="true"
         ;;
     esac
 done
@@ -118,7 +122,7 @@ elif [[ "$plugin" == "forge" || $plugin == "sponge-forge" ]]; then
 
     fi
 elif [ "$plugin" == "sponge" ]; then
-    echo 'Sponge Standalone is not currently suported in this version.';
+    echo 'Sponge Standalone is not currently supported in this version.';
 elif [[ "$plugin" == "vanilla" ]]; then
     echo "installer:~$ curl -o server.jar https://s3.amazonaws.com/Minecraft.Download/versions/${vanillaVersion}/minecraft_server.${vanillaVersion}.jar"
     curl -o server.jar https://s3.amazonaws.com/Minecraft.Download/versions/${vanillaVersion}/minecraft_server.${vanillaVersion}.jar

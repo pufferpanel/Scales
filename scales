@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+PATH=${PWD}/node/bin:$PATH
+if [ -f node/bin/node ]; then
+    echo "Using packaged node"
+else
+    which node >/dev/null 2>&1
+    if [ $? -eq 0 ]; then
+        echo "Using system node"
+    else
+        echo "NodeJS is not installed or found. Please make sure NodeJS is installed on your system"
+    fi
+fi
+
+case "$1" in
+    node_update)
+        npm update
+        ;;
+
+    node_install)
+        apt-get --version 1>/dev/null 2>&1
+        if [ $? -eq 0 ]; then
+            apt-get install -y openssl curl make gcc g++ tar lib32gcc1 lib32tinfo5 lib32z1 lib32stdc++6 openjdk-7-jdk
+        else
+            yum --version 1>/dev/null 2>&1
+            if [ $? -eq 0 ]; then
+                yum install -y openssl curl make gcc gcc-c++ tar java-1.8.0-openjdk-devel tar python glibc.i686 libstdc++.i686
+            else
+                echo "Unsupported distro detected, cannot install system dependencies"
+            fi
+        fi
+        npm install
+        ;;
+    *)
+        node scales.js $@
+        ;;
+esac

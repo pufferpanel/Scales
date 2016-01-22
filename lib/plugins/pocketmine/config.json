@@ -12,5 +12,6 @@
     "ports": {
         "listen": 19132
     },
-    "query_type": "minecraftping"
+    "query_type": "minecraftping",
+    "start_dir": "./public"
 }

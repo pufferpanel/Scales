@@ -2,7 +2,7 @@
 
 function checkResponseCode() {
     if [ $? -ne 0 ]; then
-        echo -e "An error occured while installing."
+        echo -e "An error occurred while installing."
         exit 1
     fi
 }
@@ -13,8 +13,9 @@ sleep 5
 username=root
 bungeeVersion="lastSuccessfulBuild"
 base="/home/"
+useDocker="false"
 
-while getopts ":b:u:v:" opt; do
+while getopts ":b:u:v:d" opt; do
     case "$opt" in
     b)
         base=$OPTARG
@@ -24,6 +25,9 @@ while getopts ":b:u:v:" opt; do
 		;;
     u)
         username=$OPTARG
+        ;;
+    d)
+        useDocker="true"
         ;;
     esac
 done

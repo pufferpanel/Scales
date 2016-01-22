@@ -1,18 +1,17 @@
 {
   "name": "Scales",
-  "version": "0.2.3",
-  "description": "Scales — the flexible, open source game management daemon built for PufferPanel.",
-  "author": "Dane Everitt <dane@daneeveritt.com>",
+  "version": "0.2.4",
+  "description": "Scales — the flexible, open source game management daemon built for PufferPanel",
+  "author": "PufferPanel",
   "devDependencies": {
-    "eslint": "1.9.*",
-    "eslint-plugin-hapi": "3.0.0"
+    "eslint": "1.9.*"
   },
   "dependencies": {
     "async": "1.5.*",
     "binaryjs": "0.2.*",
     "colors": "1.1.*",
+    "daemon": "1.1.*",
     "date-utils": "1.2.*",
-    "forever": "0.15.*",
     "fs-extra": "0.26.*",
     "gamedig": "0.2.*",
     "js-yaml": "3.4.*",
@@ -27,14 +26,15 @@
     "strip-ansi": "3.0.*",
     "trim": "0.0.*",
     "usage": "0.7.*",
+    "userid": "0.2.0",
     "winston": "2.1.*",
     "yargs": "3.*.0"
   },
   "scripts": {
-    "start": "forever start index.js --minUptime=1000 --spinSleepTime=1000",
-    "start-verbose": "node index.js --consoleLevel=verbose --showMeta=true",
-    "stop": "forever stop index.js",
-    "test": "eslint --plugin hapi lib/* index.js"
+    "start": "./scales start",
+    "stop": "./scales stop",
+    "start-verbose": "./scales debug",
+    "test": "eslint --plugin lib/* index.js"
   },
   "main": "index.js",
   "repository": {
