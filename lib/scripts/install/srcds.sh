@@ -27,6 +27,7 @@ while getopts ":b:u:d" opt; do
         ;;
     esac
 done
+base=${base}/
 
 if [ "${username}" == "root" ]; then
     echo "WARNING: Invalid Username Supplied."
