@@ -1,15 +1,12 @@
 #!/usr/bin/env bash
 
 PATH=${PWD}/node/bin:$PATH
-if [ -f node/bin/node ]; then
-    echo "Using packaged node"
-else
-    which node >/dev/null 2>&1
-    if [ $? -eq 0 ]; then
-        echo "Using system node"
-    else
-        echo "NodeJS is not installed or found. Please make sure NodeJS is installed on your system"
-    fi
+if [ ! -d node ]; then
+    echo "Downloading Node"
+    curl -o node.tar.gz https://nodejs.org/dist/v4.2.4/node-v4.2.4-linux-x64.tar.gz
+    tar -xf node.tar.gz
+    rm -f node.tar.gz
+    mv node-* node
 fi
 
 case "$1" in
@@ -20,15 +17,16 @@ case "$1" in
     node_install)
         apt-get --version 1>/dev/null 2>&1
         if [ $? -eq 0 ]; then
-            apt-get install -y openssl curl make gcc g++ tar lib32gcc1 lib32tinfo5 lib32z1 lib32stdc++6 openjdk-7-jdk
+            apt-get install -y openssl make gcc g++ lib32gcc1 lib32tinfo5 lib32z1 lib32stdc++6 openjdk-7-jdk
         else
             yum --version 1>/dev/null 2>&1
             if [ $? -eq 0 ]; then
-                yum install -y openssl curl make gcc gcc-c++ tar java-1.8.0-openjdk-devel tar python glibc.i686 libstdc++.i686
+                yum install -y openssl make gcc gcc-c++ java-1.8.0-openjdk-devel tar python glibc.i686 libstdc++.i686
             else
                 echo "Unsupported distro detected, cannot install system dependencies"
             fi
         fi
+        rm -rf node_modules
         npm install
         ;;
     *)
