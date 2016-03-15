@@ -5,7 +5,7 @@
     "pgrep_exe": "java",
     "cfg": "config.yml",
     "trigger": {
-        "started": "[INFO] Listening on "
+        "started": "[INFORMATION] Listening on "
     },
     "install_script": "install/bungeecord.sh",
     "log": "proxy.log.0",
