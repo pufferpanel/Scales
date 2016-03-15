@@ -13,18 +13,22 @@ sleep 5
 username=root
 base="/home/"
 plugin="vanilla"
+spigotVersion="latest"
 spongeVersion="1.8-1519-2.1DEV-693"
 forgeVersion="1.8-11.14.3.1519"
 vanillaVersion="1.8.8"
 useDocker="false";
 
-while getopts ":b:u:s:f:p:v:d" opt; do
+while getopts ":b:u:r:s:f:p:v:d" opt; do
     case "$opt" in
     b)
         base=$OPTARG
         ;;
     u)
         username=$OPTARG
+        ;;
+    r)
+        spigotVersion=$OPTARG
         ;;
     s)
         spongeVersion=$OPTARG
@@ -63,8 +67,8 @@ rm -rf *
 checkResponseCode
 
 if [ "$plugin" == "spigot" ]; then
-    # We will ignore -r for this since there is no easy way to do a specific version of Spigot.
-    # To install a specific version the user should manually build and upload files.
+    # version selection now is quite easy on spigot
+    # https://www.spigotmc.org/wiki/buildtools/#versions
     echo "installer:~$ curl -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar"
     curl -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
     checkResponseCode
@@ -72,8 +76,8 @@ if [ "$plugin" == "spigot" ]; then
     echo "installer:~$ git config --global --unset core.autocrlf"
     git config --global --unset core.autocrlf
 
-    echo "installer:~$ java -jar BuildTools.jar"
-    java -jar BuildTools.jar
+    echo "installer:~$ java -jar BuildTools.jar --rev ${spigotVersion}"
+    java -jar BuildTools.jar --rev ${spigotVersion}
     checkResponseCode
 
     echo "installer:~$ mv spigot*.jar ../server.jar"
