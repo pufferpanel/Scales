@@ -1,4 +1,3 @@
-.*
 !.travis.yml
 !.githold
 node_modules

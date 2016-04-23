@@ -1,0 +1,2 @@
+Scales development is currently frozen. Pull Requests for Scales are only being accepted if they fix major usability issues or bugs. New features will not be accepted.
+Please remove these two lines before submitting your Pull Request.
