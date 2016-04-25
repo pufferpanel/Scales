@@ -1,4 +1,4 @@
-# Scales
+# Scales [![Release](https://img.shields.io/github/release/PufferPanel/Scales.svg?maxAge=3600)](https://github.com/PufferPanel/Scales/releases)
 Scales — the flexible game management daemon built for PufferPanel.
 
 [Documentation](http://scales.pufferpanel.com/docs) |
