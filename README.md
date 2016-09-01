@@ -8,6 +8,13 @@ Scales — the flexible game management daemon built for PufferPanel.
 
 Scales is a game server management daemon, built specifically for use with PufferPanel. Scales can run game servers either directly on the system or inside docker containers, and supports a variety of servers including Minecraft, Spigot, Sponge, Forge, BungeeCord, PocketMine, and SRCDS.
 
+
+### NOTICE
+
+Scales is no longer receiving updates, due to internal code issues and design choices. We are working on a new daemon called pufferd to replace Scales.
+
+You can view this new daemon [here](https://github.com/PufferPanel/pufferd).
+
 ### Installation
 To install Scales for use with PufferPanel please follow [this guide](http://scales.pufferpanel.com/docs/getting-started). To manually install Scales you may use [this guide](http://scales.pufferpanel.com/docs/manually-installing-scales).
 
